@@ -4,3 +4,4 @@
 !/app-storage/.gitkeep
 /.env
 /laravel.env
+.idea
