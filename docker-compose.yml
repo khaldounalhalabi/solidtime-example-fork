@@ -10,6 +10,8 @@ services:
       - |
         chown -R 1000:1000 /storage
     restart: "no"
+    networks:
+      - internal
   app:
     restart: always
     image: "solidtime/solidtime:${SOLIDTIME_IMAGE_TAG:-latest}"
@@ -26,9 +28,10 @@ services:
     env_file:
       - .env
     depends_on:
-      - init-permissions:
-          condition: service_completed_successfully
-      - database
+      init-permissions:
+        condition: service_completed_successfully
+      database:
+        condition: service_healthy
   scheduler:
     restart: always
     image: "solidtime/solidtime:${SOLIDTIME_IMAGE_TAG:-latest}"
@@ -45,9 +48,10 @@ services:
     env_file:
       - .env
     depends_on:
-      - init-permissions:
-          condition: service_completed_successfully
-      - database
+      init-permissions:
+        condition: service_completed_successfully
+      database:
+        condition: service_healthy
   queue:
     restart: always
     image: "solidtime/solidtime:${SOLIDTIME_IMAGE_TAG:-latest}"
@@ -65,9 +69,10 @@ services:
     env_file:
       - .env
     depends_on:
-      - init-permissions:
+      init-permissions:
           condition: service_completed_successfully
-      - database
+      database:
+        condition: service_healthy
   database:
     restart: always
     image: 'postgres:15'
