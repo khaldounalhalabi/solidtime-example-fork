@@ -11,6 +11,7 @@ services:
       - "./app-storage:/var/www/html/storage/app"
     environment:
       CONTAINER_MODE: http
+      AUTO_DB_MIGRATE: "true"
     healthcheck:
       test: [ "CMD", "curl", "--fail", "http://localhost:8000/health-check/up" ]
     env_file:
@@ -29,6 +30,7 @@ services:
       - "./app-storage:/var/www/html/storage/app"
     environment:
       CONTAINER_MODE: scheduler
+      AUTO_DB_MIGRATE: "true"
     healthcheck:
       test: [ "CMD", "healthcheck" ]
     env_file:
@@ -48,6 +50,7 @@ services:
     environment:
       CONTAINER_MODE: worker
       WORKER_COMMAND: "php /var/www/html/artisan queue:work"
+      AUTO_DB_MIGRATE: "true"
     healthcheck:
       test: [ "CMD", "healthcheck" ]
     env_file:
